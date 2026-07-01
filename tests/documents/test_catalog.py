@@ -14,10 +14,10 @@ from mercosultoolkit.documents.catalog import (
 
 def test_get_document_by_name() -> None:
     """Verifica que get_document resolve documentos por nome."""
-    # Quando implementarmos os documentos, este teste deve passar.
-    # Por enquanto, esperamos um catálogo vazio.
-    with pytest.raises(UnsupportedFormatError):
-        get_document("cpf")
+    # CPF já foi implementado
+    doc = get_document("cpf")
+    assert doc.name == "cpf"
+    assert doc.country == "BR"
 
 
 def test_aliases() -> None:

@@ -28,6 +28,8 @@ _ALIASES = {
     "cedula": "cedula-uy",
     "pix": "pix-br",
     "titulo-eleitor": "titulo-eleitor-br",
+    "cnh": "cnh-br",
+    "passaporte": "passaporte-br",
 }
 
 # Documentos listados mas indisponíveis: (nome, país, família, resumo, motivo).

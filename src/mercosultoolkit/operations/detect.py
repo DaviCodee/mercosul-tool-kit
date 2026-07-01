@@ -25,9 +25,11 @@ DETECT_ORDER = (
     "cedula-uy",      # 7 dígitos + DV
     "renavam",        # 11 dígitos + DV
     "dni-ar",         # 7-8 dígitos, sem DV (mais permissivo)
+    "cnh-br",         # 11 dígitos formato-apenas (não tem DV, colide com CPF/CNPJ/PIS)
     "cedula-py",      # formato-apenas, bem permissivo
     "rg-br",          # formato-apenas, permissivo
-    # Placas/veicular: formato-apenas, baixo risco de colisão com IDs numéricos
+    # Placas/veicular + Passaporte: formato-apenas, baixo risco de colisão com IDs numéricos
+    "passaporte-br",
     "placa-br",
     "placa-py",
     "patente-ar",

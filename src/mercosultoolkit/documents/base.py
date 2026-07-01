@@ -11,6 +11,7 @@ Documentos listados mas indisponíveis usam :class:`UnavailableDocument` e levan
 
 from __future__ import annotations
 
+import random
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any
@@ -131,3 +132,17 @@ class UnavailableDocument(DocumentScheme):
     def parse(self, value: str) -> dict[str, Any]:
         self._raise()
         raise AssertionError  # pragma: no cover
+
+
+def rng_for(ctx: GenContext) -> random.Random:
+    """Retorna um RNG, avançando `ctx.seed` para a próxima chamada.
+
+    Quando `generate()` é chamado `count` vezes com a mesma `ctx`, cada chamada
+    deve usar um seed diferente para evitar valores idênticos. Este helper
+    consome-e-avança o seed automaticamente.
+    """
+    if ctx.seed is None:
+        return random.Random()
+    rng = random.Random(ctx.seed)
+    ctx.seed += 1
+    return rng

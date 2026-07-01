@@ -1,0 +1,202 @@
+"""Pools de dados para gerar perfis fake no Brasil."""
+
+from __future__ import annotations
+
+from mercosultoolkit.fake.data.base import CountryData
+
+DATA = CountryData(
+    country="BR",
+    first_names_male=[
+        "João", "José", "Carlos", "Roberto", "Miguel", "Ricardo", "Fernando", "Paulo",
+        "Francisco", "André", "Marcus", "Lucas", "Felipe", "Diego", "Gustavo", "Bruno",
+        "Thiago", "Rafael", "Alexandre", "Eduardo", "Álvaro", "Mateus", "Victor",
+        "Enzo", "Vinícius", "Gabriel", "Leonardo", "Heitor", "Samuel", "Otávio",
+        "Benilson", "Cláudio", "Danilo", "Everton", "Fábio", "Gilberto",
+    ],
+    first_names_female=[
+        "Maria", "Ana", "Fernanda", "Carolina", "Julia", "Amanda", "Patricia", "Débora",
+        "Claudia", "Vanessa", "Mariana", "Roberta", "Camila", "Beatriz", "Sophia",
+        "Isabella", "Giovanna", "Priscila", "Viviane", "Alessandra", "Rafaela", "Sandra",
+        "Adriana", "Fabiana", "Gabriela", "Helena", "Irene", "Janaína", "Katarina",
+        "Letícia", "Monique", "Natália", "Olívia", "Penélope", "Queila",
+    ],
+    surnames=[
+        "Silva", "Santos", "Oliveira", "Souza", "Costa", "Ferreira", "Gomes", "Alves",
+        "Martins", "Rocha", "Carvalho", "Ribeiro", "Almeida", "Pereira", "Monteiro",
+        "Teixeira", "Mendes", "Antunes", "Barbosa", "Neves", "Simões", "Marques",
+        "Cardoso", "Machado", "Cavalcanti", "Batista", "Fonseca", "Pinto", "Lopes",
+        "Campos", "Dias", "Tavares", "Soares", "Vieira", "Medeiros", "Duarte",
+    ],
+    cities_by_state={
+        "SP": ["São Paulo", "Campinas", "Santos", "Ribeirão Preto", "Sorocaba"],
+        "RJ": ["Rio de Janeiro", "Niterói", "Duque de Caxias", "Nova Iguaçu"],
+        "MG": ["Belo Horizonte", "Contagem", "Betim", "Juiz de Fora"],
+        "BA": ["Salvador", "Feira de Santana", "Vitória da Conquista"],
+        "RS": ["Porto Alegre", "Caxias do Sul", "Canoas"],
+        "PR": ["Curitiba", "Londrina", "Maringá"],
+        "PE": ["Recife", "Jaboatão", "Olinda"],
+        "CE": ["Fortaleza", "Caucaia", "Maracanaú"],
+        "PA": ["Belém", "Ananindeua", "Santarém"],
+        "SC": ["Florianópolis", "Joinville", "Blumenau"],
+        "GO": ["Goiânia", "Aparecida de Goiânia"],
+        "PB": ["João Pessoa", "Campina Grande"],
+        "MA": ["São Luís", "Imperatriz"],
+        "ES": ["Vitória", "Vila Velha"],
+        "PI": ["Teresina", "Parnaíba"],
+        "RN": ["Natal", "Mossoró"],
+        "AL": ["Maceió", "Rio Largo"],
+        "MT": ["Cuiabá", "Várzea Grande"],
+        "MS": ["Campo Grande", "Dourados"],
+        "AC": ["Rio Branco"],
+        "AM": ["Manaus", "Itacoatiara"],
+        "AP": ["Macapá"],
+        "RO": ["Porto Velho", "Ji-Paraná"],
+        "RR": ["Boa Vista"],
+        "DF": ["Brasília"],
+        "SE": ["Aracaju"],
+        "TO": ["Palmas"],
+    },
+    states=[
+        "SP", "RJ", "MG", "BA", "RS", "PR", "PE", "CE", "PA", "SC", "GO", "PB",
+        "MA", "ES", "PI", "RN", "AL", "MT", "MS", "AC", "AM", "AP", "RO", "RR",
+        "DF", "SE", "TO",
+    ],
+    banks=[
+        ("001", "Banco do Brasil"),
+        ("041", "Banco do Estado de São Paulo"),
+        ("104", "Caixa Econômica Federal"),
+        ("237", "Bradesco"),
+        ("341", "Itaú Unibanco"),
+        ("260", "Nubank"),
+        ("077", "Banco Inter"),
+        ("336", "C6 Bank"),
+        ("212", "Banco Original"),
+        ("290", "PagSeguro"),
+        ("655", "Banco de Seguros do Estado"),
+    ],
+    cnaes=[
+        ("5811-901", "Edição de livros"),
+        ("6202-301", "Desenvolvimento de programas de computador customizáveis"),
+        ("6203-119", "Desenvolvimento e licenciamento de programas de computador"),
+        ("6204-001", "Consultoria em tecnologia da informação"),
+        ("6209-204", "Suporte técnico, manutenção e outros serviços em tecnologia"),
+        ("4731-903", "Comércio varejista de livros"),
+        ("4791-001", "Comércio eletrônico"),
+        ("4689-901", "Comércio ambulante e varejista não especializado"),
+        ("4722-900", "Comércio varejista de roupas e acessórios"),
+        ("4761-901", "Comércio varejista especializado em instrumentos musicais"),
+        ("5320-201", "Serviços de estacionamento de veículos"),
+        ("6810-101", "Compra e venda de imóveis próprios"),
+        ("7020-001", "Consultoria em gestão empresarial"),
+        ("7111-300", "Serviços de arquitetura"),
+        ("8111-101", "Serviços de administração pública em geral"),
+        ("8599-603", "Treinamento em informática"),
+    ],
+    email_domains=[
+        "gmail.com", "hotmail.com", "outlook.com", "yahoo.com.br", "terra.com.br",
+        "bol.com.br", "uol.com.br", "ig.com.br", "globo.com",
+    ],
+    street_types=[
+        "Rua", "Avenida", "Travessa", "Praça", "Alameda", "Estrada", "Largo",
+        "Passagem", "Beco", "Caminho", "Rodovia",
+    ],
+    street_names=[
+        "Flores", "Paulista", "Brasil", "Independência", "Liberdade", "República",
+        "Bandeira", "Tiradentes", "Getúlio Vargas", "Oswaldo Cruz", "Rui Barbosa",
+        "das Acácias", "das Dálias", "do Comércio", "do Carmo", "Principal",
+        "Central", "Industrial", "das Nações", "Pan-Americana",
+    ],
+    neighborhoods=[
+        "Centro", "Vila Mariana", "Pinheiros", "Vila Madalena", "Consolação",
+        "Bela Vista", "Jardim Paulista", "Moema", "Ibirapuera", "Perdizes",
+        "Vila Romana", "Lapa", "Santa Cecília", "Sumaré", "Vila Leopoldina",
+        "Higienópolis", "Itaim", "Morumbi", "Vila Nova Conceição", "Butantã",
+    ],
+    job_titles=[
+        "Desenvolvedor Backend", "Desenvolvedor Frontend", "Engenheiro de Software",
+        "Analista de Sistemas", "Gestor de Projetos", "Supervisor de Equipe",
+        "Gerente de Produto", "Analista de Dados", "Especialista em DevOps",
+        "Arquiteto de Soluções", "Consultor Estratégico", "Diretor Executivo",
+        "Coordenador de Operações", "Auxiliar Administrativo", "Secretária Executiva",
+        "Contador", "Advogado", "Médico", "Enfermeiro", "Vendedor",
+    ],
+    professions=[
+        "Programador", "Analista de Sistemas", "Gestor de Projetos", "Engenheiro",
+        "Contador", "Advogado", "Médico", "Enfermeiro", "Professor", "Vendedor",
+        "Gerente", "Consultor", "Arquiteto", "Designer", "Editor", "Jornalista",
+        "Tradutor", "Intérprete", "Psicólogo", "Dentista",
+    ],
+    courses=[
+        "Engenharia de Software", "Sistemas de Informação", "Computação",
+        "Administração", "Contabilidade", "Direito", "Medicina", "Enfermagem",
+        "Pedagogia", "Psicologia", "Comunicação Social", "Jornalismo", "Design",
+        "Arquitetura", "Engenharia Civil", "Engenharia Elétrica", "Economia",
+        "Gestão de Projetos", "MBA Executivo", "Especialização em IA",
+    ],
+    blood_types=[
+        ("O+", 38), ("A+", 34), ("B+", 8), ("AB+", 4),
+        ("O-", 7), ("A-", 6), ("B-", 2), ("AB-", 1),
+    ],
+    allergies=[
+        "Amendoim", "Penicilina", "Lactose", "Glúten", "Camarão", "Ovo",
+        "Frutos secos", "Mel", "Soja", "Açúcar",
+    ],
+    medications=[
+        "Dipirona", "Ibuprofeno", "Metformina", "Losartana", "Atorvastatina",
+        "Omeprazol", "Fluoxetina", "Levotiroxina",
+    ],
+    hobbies=[
+        "Futebol", "Leitura", "Videogames", "Culinária", "Cinema", "Viagens",
+        "Yoga", "Musculação", "Natação", "Dança", "Pintura", "Fotografia",
+        "Música", "Jardinagem", "Trilhas", "Xadrez", "Modelismo", "Costura",
+    ],
+    languages=[
+        "Português", "Inglês", "Espanhol", "Francês", "Alemão", "Italiano",
+        "Japonês", "Mandarim", "Russo", "Árabe",
+    ],
+    certifications=[
+        "ISO 9001", "ISO 27001", "ISO 14001", "PMP", "Scrum Master",
+        "AWS Certified", "Azure Certified", "Google Cloud Certified",
+    ],
+    sustainability_seals=[
+        "Empresa Amiga do Meio Ambiente", "Carbono Neutro", "Energia Renovável",
+        "Certificação B Corp", "Fair Trade", "FSC Certificado",
+    ],
+    company_types=[
+        "Microempresa (ME)", "Empresa de Pequeno Porte (EPP)", "LTDA",
+        "Sociedade Anônima (S/A)", "MEI", "EIRELI",
+    ],
+    company_sizes=[
+        "MEI", "Micro", "Pequena", "Média", "Grande",
+    ],
+    cadastral_statuses=[
+        ("Ativa", 95), ("Inativa", 3), ("Cancelada", 2),
+    ],
+    tax_regimes=[
+        "Simples Nacional", "Lucro Presumido", "Lucro Real",
+    ],
+    revenue_brackets=[
+        "Até R$ 81.000", "De R$ 81.001 a R$ 360.000", "De R$ 360.001 a R$ 3.600.000",
+        "De R$ 3.600.001 a R$ 10.000.000", "De R$ 10.000.001 a R$ 30.000.000",
+        "Acima de R$ 30.000.000",
+    ],
+    marital_statuses=[
+        "Solteiro", "Casado", "Divorciado", "Viúvo", "União Estável",
+    ],
+    education_levels=[
+        "Fundamental Incompleto", "Fundamental Completo", "Médio Incompleto",
+        "Médio Completo", "Superior Incompleto", "Superior Completo",
+        "Pós-Graduação",
+    ],
+    genders=[
+        "Masculino", "Feminino", "Não-binário",
+    ],
+    cnh_categories=[
+        "A", "B", "AB", "C", "D", "E", "ACC", "AD", "AE", "D+E",
+    ],
+    relationships=[
+        "Esposa", "Esposo", "Mãe", "Pai", "Filho", "Filha", "Irmão", "Irmã",
+        "Avó", "Avô", "Tia", "Tio", "Prima", "Primo", "Sogra", "Sogro",
+        "Cunhada", "Cunhado", "Padrasto", "Madrasta",
+    ],
+)
