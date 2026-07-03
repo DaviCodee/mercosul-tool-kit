@@ -29,6 +29,19 @@ def _char_value(ch: str) -> int:
     return ord(ch) - 48
 
 
+def _mod11_dv_alnum(chars: str, weights: list[int]) -> str:
+    """DV mod-11 do CNPJ alfanumérico (2026+): cada caractere vale ord(ch)-48.
+
+    Para dígitos coincide com o cálculo numérico; letras maiúsculas valem
+    17 ('A') a 42 ('Z'). Resto < 2 → DV 0 (mesma regra especial do CNPJ).
+    """
+    if len(chars) != len(weights):
+        raise ValueError(f"Quantidade de caracteres ({len(chars)}) != pesos ({len(weights)})")
+    soma = sum(_char_value(c) * w for c, w in zip(chars, weights))
+    resto = soma % 11
+    return "0" if resto < 2 else str(11 - resto)
+
+
 class CPF(DocumentScheme):
     name = "cpf"
     country = "BR"
@@ -77,34 +90,54 @@ class CNPJ(DocumentScheme):
     summary = "CNPJ: Cadastro Nacional da Pessoa Jurídica (numérico 14 dígitos ou alfanumérico)"
     mask = "##.###.###/####-##"
 
+    _W1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+    _W2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+
     def generate(self, ctx: GenContext) -> str:
         rng = rng_for(ctx)
-        # TODO: Implementar CNPJ alfanumérico (2026+) com algoritmo completo
-        # Por enquanto, gera apenas numérico
+        if (ctx.kind or "").lower() in ("alfanumerico", "alfa", "2026"):
+            # CNPJ alfanumérico (2026+): 12 caracteres A-Z/0-9 + 2 DVs numéricos
+            alpha = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            base = "".join(rng.choice(alpha) for _ in range(12))
+            dv1 = _mod11_dv_alnum(base, self._W1)
+            dv2 = _mod11_dv_alnum(base + dv1, self._W2)
+            return base + dv1 + dv2
         base = "".join(str(rng.randint(0, 9)) for _ in range(12))
-        dv1 = _mod11_dv_standard(base, [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2], mod11_special=True)
-        dv2 = _mod11_dv_standard(base + dv1, [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2], mod11_special=True)
+        dv1 = _mod11_dv_standard(base, self._W1, mod11_special=True)
+        dv2 = _mod11_dv_standard(base + dv1, self._W2, mod11_special=True)
         return base + dv1 + dv2
 
     def parse(self, value: str) -> dict[str, Any]:
-        raw = strip_mask(value)
+        raw = strip_mask(value).upper()
 
-        if len(raw) == 14 and raw.isdigit():
-            base = raw[:12]
-            dv1_received = raw[12]
-            dv2_received = raw[13]
+        if len(raw) != 14:
+            raise InvalidInputError(f"CNPJ deve ter 14 caracteres, recebeu {len(raw)}")
 
-            dv1_expected = _mod11_dv_standard(base, [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2], mod11_special=True)
-            if dv1_received != dv1_expected:
-                raise InvalidInputError(f"CNPJ: DV1 inválida")
+        base = raw[:12]
+        dv1_received = raw[12]
+        dv2_received = raw[13]
 
-            dv2_expected = _mod11_dv_standard(base + dv1_received, [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2], mod11_special=True)
-            if dv2_received != dv2_expected:
-                raise InvalidInputError(f"CNPJ: DV2 inválida")
+        if not raw[12:].isdigit():
+            raise InvalidInputError("CNPJ: os 2 dígitos verificadores devem ser numéricos")
 
-            return {"cnpj": raw, "kind": "numerico"}
+        if raw.isdigit():
+            dv1_expected = _mod11_dv_standard(base, self._W1, mod11_special=True)
+            dv2_expected = _mod11_dv_standard(base + dv1_received, self._W2, mod11_special=True)
+            kind = "numerico"
+        elif base.isalnum():
+            # CNPJ alfanumérico (2026+): valor do caractere = ord(ch) - 48
+            dv1_expected = _mod11_dv_alnum(base, self._W1)
+            dv2_expected = _mod11_dv_alnum(base + dv1_received, self._W2)
+            kind = "alfanumerico"
         else:
-            raise InvalidInputError(f"CNPJ deve ter 14 dígitos, recebeu {len(raw)}")
+            raise InvalidInputError("CNPJ contém caracteres inválidos")
+
+        if dv1_received != dv1_expected:
+            raise InvalidInputError("CNPJ: DV1 inválida")
+        if dv2_received != dv2_expected:
+            raise InvalidInputError("CNPJ: DV2 inválida")
+
+        return {"cnpj": raw, "kind": kind}
 
     def apply_mask(self, value: str) -> str:
         """Aplica máscara compatível com o tipo de CNPJ."""
