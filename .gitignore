@@ -29,3 +29,12 @@ htmlcov/
 
 # Saídas geradas
 out/
+
+# Secrets (nunca commitar)
+.env
+.env.*
+!.env.example
+*.secret
+*.secrets
+secrets/
+config/secrets.*
