@@ -11,14 +11,16 @@ from mercosultoolkit.core.io import DataInput, OperationResult
 from mercosultoolkit.core.operation import DocumentOperation
 from mercosultoolkit.core.params import OperationParams
 from mercosultoolkit.core.registry import register
-from mercosultoolkit.documents.catalog import get_document
+from mercosultoolkit.documents.catalog import document_names, get_document
 from mercosultoolkit.operations.detect import detect
 
 
 class MaskParams(OperationParams):
     value: str = Field(min_length=1, description="o documento a mascarar/desmascarar")
     document: str | None = Field(
-        default=None, description="tipo do documento; se omitido, tenta detectar"
+        default=None,
+        description="tipo do documento; se omitido, tenta detectar",
+        json_schema_extra={"enum": document_names()},
     )
     to: Literal["masked", "unmasked"] = Field(
         default="masked", description="masked para aplicar máscara, unmasked para remover"

@@ -21,6 +21,7 @@ from mercosultoolkit.documents.base import DocumentScheme, UnavailableDocument
 _ALIASES = {
     "run": "rut-cl",
     "rut": "rut-cl",
+    "rg": "rg-br",
     "taxid-br": "cnpj",
     "cuil": "cuil-ar",
     "cuit": "cuit-ar",
@@ -33,7 +34,22 @@ _ALIASES = {
 }
 
 # Documentos listados mas indisponíveis: (nome, país, família, resumo, motivo).
-_UNAVAILABLE: list[tuple[str, str, str, str, str]] = []
+# Países além do BR ainda não têm algoritmos implementados; registrá-los aqui faz
+# o nome resolver (alias incluso) e falhar com "não suportado" em vez de
+# "desconhecido", além de aparecer no list-documents com o motivo.
+_UNAVAILABLE: list[tuple[str, str, str, str, str]] = [
+    ("dni-ar", "AR", "identificação", "DNI argentino", "ainda não implementado"),
+    ("cuil-ar", "AR", "identificação", "CUIL argentino", "ainda não implementado"),
+    ("cuit-ar", "AR", "identificação", "CUIT argentino", "ainda não implementado"),
+    ("patente-ar", "AR", "veicular", "Patente argentina", "ainda não implementado"),
+    ("cedula-uy", "UY", "identificação", "Cédula uruguaia", "ainda não implementado"),
+    ("rut-uy", "UY", "identificação", "RUT uruguaio", "ainda não implementado"),
+    ("matricula-uy", "UY", "identificação", "Matrícula uruguaia", "ainda não implementado"),
+    ("cedula-py", "PY", "identificação", "Cédula paraguaia", "ainda não implementado"),
+    ("ruc-py", "PY", "identificação", "RUC paraguaio", "ainda não implementado"),
+    ("rut-cl", "CL", "identificação", "RUT/RUN chileno", "ainda não implementado"),
+    ("patente-cl", "CL", "veicular", "Patente chilena", "ainda não implementado"),
+]
 
 
 @cache
@@ -41,9 +57,11 @@ def _registry() -> dict[str, DocumentScheme]:
     docs: list[DocumentScheme] = []
     for module in (br, ar, uy, py, cl):
         docs.extend(module.build())
+    registry = {doc.name: doc for doc in docs}
     for name, country, family, summary, reason in _UNAVAILABLE:
-        docs.append(UnavailableDocument(name, country, family, summary, reason))
-    return {doc.name: doc for doc in docs}
+        # setdefault: implementação real futura de mesmo nome vence o placeholder
+        registry.setdefault(name, UnavailableDocument(name, country, family, summary, reason))
+    return registry
 
 
 def get_document(name: str) -> DocumentScheme:
@@ -66,6 +84,15 @@ def all_documents() -> list[DocumentScheme]:
 def available_documents() -> list[DocumentScheme]:
     """Apenas os documentos utilizáveis (exclui os indisponíveis)."""
     return [doc for doc in all_documents() if doc.available]
+
+
+def document_names() -> list[str]:
+    """Nomes canônicos dos documentos utilizáveis, ordenados.
+
+    Alimenta o ``enum`` do JSON Schema das operações — o hub genérico do site
+    transforma esse enum em dropdown, então nomes inválidos nem chegam à API.
+    """
+    return [doc.name for doc in available_documents()]
 
 
 def documents_by_country(country: str) -> list[DocumentScheme]:

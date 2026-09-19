@@ -11,13 +11,17 @@ from mercosultoolkit.core.operation import DocumentOperation
 from mercosultoolkit.core.params import OperationParams
 from mercosultoolkit.core.registry import register
 from mercosultoolkit.documents.base import GenContext
-from mercosultoolkit.documents.catalog import get_document
+from mercosultoolkit.documents.catalog import document_names, get_document
 
 
 class GenerateParams(OperationParams):
     """Parâmetros da geração. Cada documento lê só os campos que lhe interessam."""
 
-    document: str = Field(min_length=1, description="tipo de documento (ex.: cpf, cnpj, rut-cl)")
+    document: str = Field(
+        min_length=1,
+        description="tipo de documento (ex.: cpf, cnpj, rut-cl)",
+        json_schema_extra={"enum": document_names()},
+    )
     count: int = Field(default=1, ge=1, le=10_000, description="quantos documentos gerar")
     masked: bool = Field(default=True, description="aplica máscara de exibição na saída")
     uf: str | None = Field(

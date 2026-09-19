@@ -10,14 +10,16 @@ from mercosultoolkit.core.io import DataInput, OperationResult
 from mercosultoolkit.core.operation import DocumentOperation
 from mercosultoolkit.core.params import OperationParams
 from mercosultoolkit.core.registry import register
-from mercosultoolkit.documents.catalog import get_document
+from mercosultoolkit.documents.catalog import document_names, get_document
 from mercosultoolkit.operations.detect import detect
 
 
 class ValidateParams(OperationParams):
     value: str = Field(min_length=1, description="o documento a validar")
     document: str | None = Field(
-        default=None, description="valida contra este documento; se omitido, tenta detectar"
+        default=None,
+        description="valida contra este documento; se omitido, tenta detectar",
+        json_schema_extra={"enum": document_names()},
     )
 
 
